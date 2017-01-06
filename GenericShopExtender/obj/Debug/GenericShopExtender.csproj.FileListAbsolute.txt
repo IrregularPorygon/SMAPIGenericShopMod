@@ -1,0 +1,10 @@
+C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\bin\Debug\AnimalGoodsShop.dll
+C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\bin\Debug\AnimalGoodsShop.pdb
+C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\GenericShopExtender.csprojResolveAssemblyReference.cache
+C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\AnimalGoodsShop.dll
+C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\AnimalGoodsShop.pdb
+C:\git\SV Modding\GenericShopExtender\GenericShopExtender\obj\Debug\GenericShopExtender.csprojResolveAssemblyReference.cache
+C:\git\SV Modding\GenericShopExtender\GenericShopExtender\bin\Debug\GenericShopExtender.dll
+C:\git\SV Modding\GenericShopExtender\GenericShopExtender\bin\Debug\GenericShopExtender.pdb
+C:\git\SV Modding\GenericShopExtender\GenericShopExtender\obj\Debug\GenericShopExtender.dll
+C:\git\SV Modding\GenericShopExtender\GenericShopExtender\obj\Debug\GenericShopExtender.pdb
