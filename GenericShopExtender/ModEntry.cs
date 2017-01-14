@@ -41,7 +41,7 @@ namespace GenericShopExtender
                 //But who runs it?
                 foreach (string shopkeep in config.shopkeepers.Keys)
                 {
-                    string formattedShopkeep = "";
+                    string formattedShopkeep = shopkeep;
                     int yearDefined = 0;
                     this.Monitor.Log("Checking " + shopkeep + " if it contains " + "_Year", LogLevel.Warn);
                     if (shopkeep.Contains("_Year"))
