@@ -4,6 +4,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using StardewValley.Menus;
+using System;
 
 namespace GenericShopExtender
 {
@@ -24,7 +25,7 @@ namespace GenericShopExtender
             config = this.Helper.ReadConfig<ModConfig>();
             this.Monitor.Log("Printing the configuration", LogLevel.Warn);
             this.Monitor.Log(config.ToString(), LogLevel.Warn);
-            foreach(string s in config.shopkeepers.Keys)
+            foreach (string s in config.shopkeepers.Keys)
             {
                 this.Monitor.Log(s, LogLevel.Warn);
             }
@@ -40,7 +41,18 @@ namespace GenericShopExtender
                 //But who runs it?
                 foreach (string shopkeep in config.shopkeepers.Keys)
                 {
-                    if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(shopkeep, false)))
+                    string formattedShopkeep = "";
+                    int yearDefined = 0;
+                    this.Monitor.Log("Checking " + shopkeep + " if it contains " + "_Year", LogLevel.Warn);
+                    if (shopkeep.Contains("_Year"))
+                    {
+                        this.Monitor.Log("Found a year modifier", LogLevel.Warn);
+                        formattedShopkeep = shopkeep.Substring(0, shopkeep.IndexOf("_Year"));
+                        yearDefined = Int32.Parse(shopkeep.Substring(shopkeep.IndexOf("_Year") + 5));
+                        this.Monitor.Log(formattedShopkeep, LogLevel.Warn);
+                        this.Monitor.Log("With year " + yearDefined, LogLevel.Warn);
+                    }
+                    if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(formattedShopkeep, false)) && Game1.year >= yearDefined)
                     {
                         //The current shopkeep does! Now we need to get the list of what's being sold
                         IPrivateField<Dictionary<Item, int[]>> inventoryInformation = this.Helper.Reflection.GetPrivateField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
@@ -54,7 +66,7 @@ namespace GenericShopExtender
                         {
                             int itemId = itemsAndPrices[index, 0];
                             int price = itemsAndPrices[index, 1];
-                            Item objectToAdd = (Item)new Object(Vector2.Zero, itemId, int.MaxValue);
+                            Item objectToAdd = (Item)new StardewValley.Object(Vector2.Zero, itemId, int.MaxValue);
                             itemPriceAndStock.Add(objectToAdd, new int[2] { price, int.MaxValue });
                             forSale.Add(objectToAdd);
                         }

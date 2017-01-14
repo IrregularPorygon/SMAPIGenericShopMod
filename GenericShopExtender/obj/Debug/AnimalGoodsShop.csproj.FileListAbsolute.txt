@@ -1,5 +1,0 @@
-C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\bin\Debug\AnimalGoodsShop.dll
-C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\bin\Debug\AnimalGoodsShop.pdb
-C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\AnimalGoodsShop.csprojResolveAssemblyReference.cache
-C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\AnimalGoodsShop.dll
-C:\git\SV Modding\AnimalGoodsShop\AnimalGoodsShop\obj\Debug\AnimalGoodsShop.pdb
