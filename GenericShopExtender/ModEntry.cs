@@ -23,12 +23,12 @@ namespace GenericShopExtender
             MenuEvents.MenuChanged += Events_MenuChanged;
 
             config = this.Helper.ReadConfig<ModConfig>();
-            this.Monitor.Log("Printing the configuration", LogLevel.Warn);
-            this.Monitor.Log(config.ToString(), LogLevel.Warn);
-            foreach (string s in config.shopkeepers.Keys)
-            {
-                this.Monitor.Log(s, LogLevel.Warn);
-            }
+            //this.Monitor.Log("Printing the configuration", LogLevel.Info);
+            //this.Monitor.Log(config.ToString(), LogLevel.Info);
+            //foreach (string s in config.shopkeepers.Keys)
+            //{
+            //    this.Monitor.Log(s, LogLevel.Info);
+            //}
         }
 
         void Events_MenuChanged(object sender, EventArgsClickableMenuChanged e)
@@ -43,16 +43,52 @@ namespace GenericShopExtender
                 {
                     string formattedShopkeep = shopkeep;
                     int yearDefined = 0;
-                    this.Monitor.Log("Checking " + shopkeep + " if it contains " + "_Year", LogLevel.Warn);
-                    if (shopkeep.Contains("_Year"))
+                    List<string> seasonsDefined = new List<string>();
+                    //this.Monitor.Log("Checking " + shopkeep + " if it contains " + "_Year", LogLevel.Info);
+                    if (formattedShopkeep.Contains("_Year"))
                     {
-                        this.Monitor.Log("Found a year modifier", LogLevel.Warn);
-                        formattedShopkeep = shopkeep.Substring(0, shopkeep.IndexOf("_Year"));
-                        yearDefined = Int32.Parse(shopkeep.Substring(shopkeep.IndexOf("_Year") + 5));
-                        this.Monitor.Log(formattedShopkeep, LogLevel.Warn);
-                        this.Monitor.Log("With year " + yearDefined, LogLevel.Warn);
+                        this.Monitor.Log("Found a year modifier", LogLevel.Info);
+                        yearDefined = Int32.Parse(formattedShopkeep.Substring(formattedShopkeep.IndexOf("_Year") + 5,1));
+                        formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_Year"), 6);
+                        this.Monitor.Log(formattedShopkeep, LogLevel.Info);
+                        this.Monitor.Log("With year " + yearDefined, LogLevel.Info);
                     }
-                    if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(formattedShopkeep, false)) && Game1.year >= yearDefined)
+
+                    if(formattedShopkeep.Contains("_Season"))
+                    {
+                        this.Monitor.Log("Found a season modifier", LogLevel.Info);
+                        if (formattedShopkeep.IndexOf("_spring") != -1)
+                        {
+                            seasonsDefined.Add("spring");
+                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_spring"), 7);
+                        }
+                        if (formattedShopkeep.IndexOf("_summer") != -1)
+                        {
+                            seasonsDefined.Add("summer");
+                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_summer"), 7);
+                        }
+                        if (formattedShopkeep.IndexOf("_winter") != -1)
+                        {
+                            seasonsDefined.Add("winter");
+                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_winter"), 7);
+                        }
+                        if (formattedShopkeep.IndexOf("_fall") != -1)
+                        {
+                            seasonsDefined.Add("fall");
+                            formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_fall"), 5);
+                        }
+                        formattedShopkeep = formattedShopkeep.Remove(formattedShopkeep.IndexOf("_Season"), 7);
+                    }
+                    else
+                    {
+                        seasonsDefined.Add("spring");
+                        seasonsDefined.Add("summer");
+                        seasonsDefined.Add("winter");
+                        seasonsDefined.Add("fall");
+                    }
+                    this.Monitor.Log(formattedShopkeep, LogLevel.Info);
+
+                    if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(formattedShopkeep, false)) && Game1.year >= yearDefined && seasonsDefined.Contains(Game1.currentSeason))
                     {
                         //The current shopkeep does! Now we need to get the list of what's being sold
                         IPrivateField<Dictionary<Item, int[]>> inventoryInformation = this.Helper.Reflection.GetPrivateField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
