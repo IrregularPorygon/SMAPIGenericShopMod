@@ -1,5 +1,0 @@
-C:\git\SMAPIGenericShopMod\GenericShopExtender\bin\Debug\GenericShopExtender.dll
-C:\git\SMAPIGenericShopMod\GenericShopExtender\bin\Debug\GenericShopExtender.pdb
-C:\git\SMAPIGenericShopMod\GenericShopExtender\obj\Debug\GenericShopExtender.csprojResolveAssemblyReference.cache
-C:\git\SMAPIGenericShopMod\GenericShopExtender\obj\Debug\GenericShopExtender.dll
-C:\git\SMAPIGenericShopMod\GenericShopExtender\obj\Debug\GenericShopExtender.pdb
