@@ -4,7 +4,7 @@
   "Version": {
     "MajorVersion": 0,
     "MinorVersion": 1,
-    "PatchVersion": 3,
+    "PatchVersion": 4,
     "Build": null
   },
   "Description": "Ability to add any item to any shop. By default, adds animal goods to Marnie's shop",

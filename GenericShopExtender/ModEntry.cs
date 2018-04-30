@@ -91,9 +91,9 @@ namespace GenericShopExtender
                     if (currentShopMenu.portraitPerson.Equals(StardewValley.Game1.getCharacterFromName(formattedShopkeep, false)) && Game1.year >= yearDefined && seasonsDefined.Contains(Game1.currentSeason))
                     {
                         //The current shopkeep does! Now we need to get the list of what's being sold
-                        IPrivateField<Dictionary<Item, int[]>> inventoryInformation = this.Helper.Reflection.GetPrivateField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
+                        IReflectedField<Dictionary<Item, int[]>> inventoryInformation = this.Helper.Reflection.GetField<Dictionary<Item, int[]>>(currentShopMenu, "itemPriceAndStock");
                         Dictionary<Item, int[]> itemPriceAndStock = inventoryInformation.GetValue();
-                        IPrivateField<List<Item>> forSaleInformation = this.Helper.Reflection.GetPrivateField<List<Item>>(currentShopMenu, "forSale");
+                        IReflectedField<List<Item>> forSaleInformation = this.Helper.Reflection.GetField<List<Item>>(currentShopMenu, "forSale");
                         List<Item> forSale = forSaleInformation.GetValue();
 
                         //Now, lets add a few things...
