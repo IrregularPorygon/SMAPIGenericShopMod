@@ -1,16 +1,10 @@
-﻿using StardewModdingAPI;
+﻿using System;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using StardewValley.Menus;
-using System;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using Netcode;
-using StardewValley.Network;
-using Microsoft.Xna.Framework.Input;
-using System.Linq;
 
 namespace FruitTreesOutsideFarm
 {
@@ -18,15 +12,15 @@ namespace FruitTreesOutsideFarm
     {
         public override void Entry(IModHelper helper)
         {
-            InputEvents.ButtonPressed += PlayerInputEvent;
-            SaveEvents.BeforeSave += EndOfDayEvent;
+            helper.Events.Input.ButtonPressed += PlayerInputEvent;
+            helper.Events.GameLoop.Saving += EndOfDayEvent;
         }
 
-        private void PlayerInputEvent(object sender, EventArgsInput eventArguments)
+        private void PlayerInputEvent(object sender, ButtonPressedEventArgs eventArguments)
         {
-            if ((eventArguments.IsActionButton || eventArguments.IsUseToolButton))
+            if ((eventArguments.Button.IsActionButton() || eventArguments.Button.IsUseToolButton()))
             {
-                if (Game1.player.ActiveObject != null && !(Game1.player.ActiveObject is Tool) && Game1.player.ActiveObject.Name.Contains("Sapling"))
+                if (Game1.player.ActiveObject != null && Game1.player.ActiveObject.Name.Contains("Sapling"))
                 {
                     Vector2 plantingPosition = GetPlantingPosition();
                     if (!Game1.eventUp || Game1.isFestival())
@@ -56,11 +50,12 @@ namespace FruitTreesOutsideFarm
         {
             foreach (GameLocation locationIterator in Game1.locations)
             {
-                foreach (KeyValuePair<Vector2, NetRef<TerrainFeature>> potentialFruitTree in locationIterator.terrainFeatures.FieldPairs)
+                foreach (var potentialFruitTree in locationIterator.terrainFeatures.Pairs)
                 {
-                    if (potentialFruitTree.Value.Value is FruitTree)
+                    var tree = potentialFruitTree.Value as FruitTree;
+                    if (tree != null)
                     {
-                        FruitTree fruitTree = potentialFruitTree.Value.Value as FruitTree;
+                        FruitTree fruitTree = tree;
                         Boolean justBloomed = false;
                         if (fruitTree.daysUntilMature.Value > 28)
                         {
@@ -88,7 +83,7 @@ namespace FruitTreesOutsideFarm
             }
         }
 
-        private void EndOfDayEvent(object sender, EventArgs eventArguments)
+        private void EndOfDayEvent(object sender, SavingEventArgs eventArguments)
         {
             GrowTrees();
         }
@@ -131,7 +126,7 @@ namespace FruitTreesOutsideFarm
 
             if (currentLocation.terrainFeatures.ContainsKey(proposedTreeLocation))
             {
-                if (!(currentLocation.terrainFeatures[proposedTreeLocation] is HoeDirt) || (currentLocation.terrainFeatures[proposedTreeLocation] as HoeDirt).crop != null)
+                if (!(currentLocation.terrainFeatures[proposedTreeLocation] is HoeDirt) || ((HoeDirt) currentLocation.terrainFeatures[proposedTreeLocation]).crop != null)
                 {
                     return;
                 }
@@ -156,7 +151,6 @@ namespace FruitTreesOutsideFarm
             }
 
             Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.13068"));
-            return;
         }
     }
 }

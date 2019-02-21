@@ -4,7 +4,7 @@ namespace GenericShopExtender
 {
     public class ModConfig
     {
-        public Dictionary<string, int[,]> shopkeepers { get; set; }
+        public Dictionary<string, int[,]> Shopkeepers { get; set; }
 
     }
 }
