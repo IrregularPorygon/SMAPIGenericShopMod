@@ -8,17 +8,29 @@ using StardewValley.TerrainFeatures;
 
 namespace FruitTreesOutsideFarm
 {
+    /// <summary>The mod entry class.</summary>
     public class ModEntry : Mod
     {
+        /*********
+        ** Public methods
+        *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.Input.ButtonPressed += PlayerInputEvent;
-            helper.Events.GameLoop.Saving += EndOfDayEvent;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.Saving += OnSaving;
         }
 
-        private void PlayerInputEvent(object sender, ButtonPressedEventArgs eventArguments)
+        /*********
+        ** Private methods
+        *********/
+        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if ((eventArguments.Button.IsActionButton() || eventArguments.Button.IsUseToolButton()))
+            if (e.Button.IsActionButton() || e.Button.IsUseToolButton())
             {
                 if (Game1.player.ActiveObject != null && Game1.player.ActiveObject.Name.Contains("Sapling"))
                 {
@@ -46,23 +58,30 @@ namespace FruitTreesOutsideFarm
             */
         }
 
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
+            GrowTrees();
+        }
+
         private void GrowTrees()
         {
             foreach (GameLocation locationIterator in Game1.locations)
             {
                 foreach (var potentialFruitTree in locationIterator.terrainFeatures.Pairs)
                 {
-                    var tree = potentialFruitTree.Value as FruitTree;
-                    if (tree != null)
+                    if (potentialFruitTree.Value is FruitTree tree)
                     {
                         FruitTree fruitTree = tree;
-                        Boolean justBloomed = false;
+                        bool justBloomed = false;
                         if (fruitTree.daysUntilMature.Value > 28)
                         {
                             fruitTree.daysUntilMature.Value = 28;
                         }
                         fruitTree.daysUntilMature.Value--;
-                        
+
                         if (fruitTree.daysUntilMature.Value % 7 == 0)
                         {
                             fruitTree.growthStage.Value++;
@@ -82,12 +101,6 @@ namespace FruitTreesOutsideFarm
                 }
             }
         }
-
-        private void EndOfDayEvent(object sender, SavingEventArgs eventArguments)
-        {
-            GrowTrees();
-        }
-
 
         private Vector2 GetPlantingPosition()
         {
@@ -126,7 +139,7 @@ namespace FruitTreesOutsideFarm
 
             if (currentLocation.terrainFeatures.ContainsKey(proposedTreeLocation))
             {
-                if (!(currentLocation.terrainFeatures[proposedTreeLocation] is HoeDirt) || ((HoeDirt) currentLocation.terrainFeatures[proposedTreeLocation]).crop != null)
+                if (!(currentLocation.terrainFeatures[proposedTreeLocation] is HoeDirt) || ((HoeDirt)currentLocation.terrainFeatures[proposedTreeLocation]).crop != null)
                 {
                     return;
                 }
